@@ -1,7 +1,7 @@
 ﻿#pragma strict
-private var speed : float = 1;
+private var speed : float = 16;
 private var player : GameObject;
-var maxSpeed : float = 10;
+var maxSpeed : float = 20;
 
 function Start () {
 	player = GameObject.Find("Player"); 
@@ -10,9 +10,19 @@ function Start () {
 
 function Update () {
 
-	transform.Translate(Vector2(0,speed) * Time.deltaTime );
+	//transform.Translate(Vector2(0,speed) * Time.deltaTime );
+	
+	//transform.GetComponent.<Rigidbody>.AddRelativeForce (Vector2.up * speed);
 
+	
+}
 
+function FixedUpdate(){
+	GetComponent.<Rigidbody2D>().AddRelativeForce (Vector2.up * speed );
+	
+	if (GetComponent.<Rigidbody2D>().velocity.magnitude > maxSpeed){
+    	GetComponent.<Rigidbody2D>().velocity = GetComponent.<Rigidbody2D>().velocity.normalized * maxSpeed;
+	}
 }
 
 function OnTriggerEnter(other : Collider)
@@ -24,7 +34,13 @@ function OnTriggerEnter(other : Collider)
 		transform.rotation = other.transform.rotation;
 	
 		return;
-	}
+	} else if(other.tag == "Enemy"){
+	
+		//-bad
+	
+	} 
+	
+	
 	Debug.Log("Have hit "+other.name);
 }
 
